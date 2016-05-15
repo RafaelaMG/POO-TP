@@ -1,2 +1,4 @@
 # POO15-16
-bla
+Trabalho prático de POO 2015/2016
+
+Trabalhem seus vegetas!
