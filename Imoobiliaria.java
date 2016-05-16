@@ -5,10 +5,17 @@
  */
 package poo;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Imoobiliaria {
 
@@ -112,7 +119,47 @@ public class Imoobiliaria {
         return new Imoobiliaria(this);
     }
     
+   public void gravaObj(String fich) throws IOException { 
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fich)); 
+        oos.writeObject(this); 
+        
+        oos.flush(); 
+        oos.close(); 
+    } 
    
+   public static Imoobiliaria leObj(String fich) throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fich));
+      
+        Imoobiliaria te= (Imoobiliaria) ois.readObject();
+        
+        ois.close();
+        return te;
+    }
+   
+   public static Imoobiliaria initApp (){
+       String fich= new String(); 
+       Imoobiliaria te = null;
+        try {
+            te = Imoobiliaria.leObj(fich);
+        } catch (IOException ex) {
+            Logger.getLogger(Imoobiliaria.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Imoobiliaria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return te;
+    
+       
+   }
+   
+   public void fechaSessao (){
+       String fich=new String();
+        try {
+            gravaObj(fich);
+        } catch (IOException ex) {
+            Logger.getLogger(Imoobiliaria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
+
 
     public void registarUtilizador(Utilizador utilizador) throws UtilizadorExistenteException {
         this.utilizadores.put(utilizador.getEmail(), utilizador.Clone());
