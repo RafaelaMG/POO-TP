@@ -5,14 +5,16 @@
  */
 package poo;
 
+import java.io.Serializable;
 
-public abstract class Imovel
+
+public abstract class Imovel implements Serializable
 {
     private String rua;
     private String idImovel;
     private String estado;
-    private float preçoP; //preço pedido pelo proprietário 
-    private float preçoM; // preço mínimo que não deve ser visível ao utilizador.
+    private int preçoP; //preço pedido pelo proprietário 
+    private int preçoM; // preço mínimo que não deve ser visível ao utilizador.
 
     public String getIdImovel() {
         return idImovel;
@@ -37,25 +39,25 @@ public abstract class Imovel
         this.rua = rua;
     }
 
-    public float getPreçoP() {
+    public int getPreçoP() {
         return preçoP;
     }
 
-    public void setPreçoP(float preçoP) {
+    public void setPreçoP(int preçoP) {
         this.preçoP = preçoP;
     }
 
-    public float getPreçoM() {
+    public int getPreçoM() {
         return preçoM;
     }
 
-    public void setPreçoM(float preçoM) {
+    public void setPreçoM(int preçoM) {
         this.preçoM = preçoM;
     }
 
    
     
-    public Imovel(String rua, String idImovel, String estado, float preçoP, float preçoM) {
+    public Imovel(String rua, String idImovel, String estado, int preçoP, int preçoM) {
         this.rua = rua;
         this.estado=estado;
         this.preçoP = preçoP;

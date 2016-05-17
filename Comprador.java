@@ -6,10 +6,72 @@
 package poo;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Comprador extends Utilizador
 {
     private ArrayList <Imovel> listaImoveis;
+
+    public ArrayList<Imovel> getListaImoveis() {
+        return listaImoveis;
+    }
+
+    public void setListaImoveis(ArrayList<Imovel> listaImoveis) {
+        this.listaImoveis = listaImoveis;
+    }
+   
+    
+    public Comprador(ArrayList<Imovel> listaImoveis, String email, String nome, String password, String morada, String datanascimento, String comprar, String vender) {
+        super(email, nome, password, morada, datanascimento, comprar, vender);
+        this.listaImoveis = listaImoveis;
+    }
+
+    public Comprador(ArrayList<Imovel> listaImoveis) {
+        this.listaImoveis = listaImoveis;
+    }
+
+    public Comprador(Comprador c){
+        super(c);
+        this.listaImoveis=c.getListaImoveis();
+    }
+
+    public Comprador(){
+        super();
+        this.listaImoveis= new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return "Comprador{" + "listaImoveis=" + listaImoveis + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Comprador other = (Comprador) obj;
+        if (!Objects.equals(this.listaImoveis, other.listaImoveis)) {
+            return false;
+        }
+        return true;
+    }
+    
+    public Comprador Clone(){
+        return new Comprador(this);
+    }
 }
 
 

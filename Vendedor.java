@@ -41,31 +41,23 @@ public class Vendedor extends Utilizador
     }
   
   
-    public Vendedor(HashMap<String, Imovel> imoveisVenda, ArrayList<Imovel> imoveisVendidos, String email, String nome, String password, String morada, String datanascimento) {
-        super(email, nome, password, morada, datanascimento);
+    public Vendedor(HashMap<String, Imovel> imoveisVenda, ArrayList<Imovel> imoveisVendidos, String email, String nome, String password, String morada, String datanascimento, String comprar, String vender) {
+        super(email, nome, password, morada, datanascimento, comprar, vender);
         this.imoveisVenda = imoveisVenda;
         this.imoveisVendidos = imoveisVendidos;
     }
 
-    public Vendedor(HashMap<String, Imovel> imoveisVenda, ArrayList<Imovel> imoveisVendidos, Utilizador u) {
-        super(u);
-        this.imoveisVenda = imoveisVenda;
-        this.imoveisVendidos = imoveisVendidos;
-    }
     
     public Vendedor(Vendedor v){
+        super(v);
         this.imoveisVenda=v.getImoveisDisponiveis();
         this.imoveisVendidos=v.getImoveisVendidos();
     }
     
     public Vendedor(){
+        super();
         this.imoveisVenda=new HashMap<>();
         this.imoveisVendidos= new ArrayList<>();
-    }
-
-    @Override
-    public String toString() {
-        return "Vendedor{" + "imoveisVenda=" + imoveisVenda + ", imoveisVendidos=" + imoveisVendidos + '}';
     }
 
     @Override
@@ -94,6 +86,13 @@ public class Vendedor extends Utilizador
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Vendedor{" + "imoveisVenda=" + imoveisVenda + ", imoveisVendidos=" + imoveisVendidos + '}';
+    }
+
+    
     
     public Vendedor Clone(){
         return new Vendedor(this);
