@@ -6,7 +6,7 @@
 package poo;
 
 
-public class Moradia extends Imovel
+public class Moradia extends Imovel implements Habitavel
 {
    private int tipo; //vamos atribuir inteiros aos tipos (isolada, geminada, banda, gaveto)
    private double areaImpl; //área de implantação 
@@ -15,7 +15,13 @@ public class Moradia extends Imovel
    private int quartos;
    private int wc;
    private int porta; //número da porta
+   private int hab = 1;
     
+    
+    public int getHabitavel(){
+        return hab;
+    
+    } 
  
 }
 

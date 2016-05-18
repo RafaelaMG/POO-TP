@@ -7,7 +7,7 @@ package poo;
 
 /**
  *
- * @author Demo
+ * @author Rafaela
  */
 public class EstadoInvalidoException extends Exception {
     public EstadoInvalidoException(String msg){

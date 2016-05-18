@@ -11,16 +11,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Imoobiliaria {
+public class Imoobiliaria implements Serializable {
 
     private HashMap<String, Utilizador> utilizadores;
     private ArrayList<Imovel> imoveis;
@@ -178,7 +180,7 @@ public class Imoobiliaria {
         try {
             gravaObj(fich);
         } catch (IOException ex) {
-            Logger.getLogger(Imoobiliaria.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -220,43 +222,75 @@ public class Imoobiliaria {
         }
     }
 
-    public boolean validaVendedor(Utilizador u, String cena) {
-        return (this.utilizadores.get(u.getVender()).equals(cena));
-    }
-
+    
     public void registaImovel(Imovel im) throws ImovelExisteException, SemAutorizacaoException {
-       /*Utilizador v=new Utilizador() {};
-       String vend="Vendedor";
-        if(!validaVendedor(v, vend))
-            throw new SemAutorizacaoException("Não tem autorização para registar um imóvel!");
-       
-        if(this.imoveis.contains(im)){
+          Utilizador u= new Utilizador() {};         
+       if(this.utilizadores.containsKey(u.getId()!=1))
+           throw new SemAutorizacaoException("Não tem autorização para adicionar imóveis!");
+           
+       else if(this.imoveis.contains(im)){
             throw new ImovelExisteException("Este imóvel já existe!");
-        }*/
+        }
            this.imoveis.add(im.Clone());
     }
     
+   public boolean elmImovel(Imovel nome){
+       return this.imoveis.remove(nome);
+   }
+   
+  
 
-    /*public void setEstado(String idImovel, String estado) throws ImovelInexistenteException, SemAutorizacaoException, EstadoInvalidoException {
-        Imovel im = new Imovel() {
-        };
-        Vendedor v = new Vendedor();
-        if (validaVendedor(v) == true) {
-            if (this.imoveis.contains(idImovel)) {
-                im.setEstadoI(estado);
-            } else if (estado.equals("")) {
-                throw new EstadoInvalidoException("Estado inválido");
-            } else {
-                throw new ImovelInexistenteException("Este id de imóvel não existe");
+    public void setEstado(String idImovel, String estado) throws ImovelInexistenteException, SemAutorizacaoException, EstadoInvalidoException {
+       
+     /*   if(!this.imoveis.contains(idImovel))
+          throw new ImovelInexistenteException("O Id de Imóvel não existe!");
+      else if(estado!="Vendido" && estado != "Em venda" && estado!="Reservado"){
+          throw new EstadoInvalidoException("Estado não é válido!");
+      }*/
+      for(Imovel i: imoveis)
+          if(i.getIdImovel().equals(idImovel)){
+              System.out.println("cena");
+              new Imovel(i) {
+}.setEstado(estado);
+    }
+    }
+
+     public List<Imovel> getImovel(String classe, int preco) {
+        List<Imovel> imo = new ArrayList<Imovel>();
+        
+        for(Imovel i: imoveis){
+            while(i.getPrecoP()<=preco){
+                if(i.getTipo().equals(classe))
+                    imo.add(i);
             }
-        } else {
-            throw new SemAutorizacaoException("Vendedor inválido");
         }
+         return imo;
+    }
 
+   /* public List<Habitavel> getHabitaveis(int preco) {
+        List<Habitavel> hab = new ArrayList<Habitavel>();
+            Imovel e = new Habitavel() 
+      
+        for(Imovel i: imoveis)
+            while(i.getPrecoP()<=preco){
+                if(i.)
+                    hab.add();
+            
+            }
+        return hab;
     }*/
 
-    public boolean verificaComprador(Utilizador u, String cena) {
-        return (this.utilizadores.get(u.getComprar()).equals(cena));
+    public Map<Imovel, Vendedor> getMapeamentoImoveis() {
+        Map<Imovel, Vendedor> mapImo = new HashMap<Imovel, Vendedor>();
+        Vendedor v = new Vendedor();
+        for (Imovel i: imoveis){
+           for(Utilizador u : utilizadores.values()){
+                if(i.getIdP()==u.getId())
+                    v = (Vendedor) u.Clone();
+                    mapImo.put(i, v);
+           }
+       }
+    return mapImo;
     }
 
 }

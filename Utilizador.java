@@ -1,6 +1,8 @@
 package poo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -11,20 +13,20 @@ public abstract class Utilizador implements Serializable
     private String password;
     private String morada;
     private String datanascimento;
-    private String comprar;
-    private String vender;
+    private int id;
+    private List<Imovel> registos;
 
     
     
     
-    public Utilizador(String email, String nome, String password, String morada, String datanascimento, String comprador, String vendedor) {
+    public Utilizador(String email, String nome, String password, String morada, String datanascimento, int id, List<Imovel> registos) {
         this.email = email;
         this.nome = nome;
         this.password = password;
         this.morada = morada;
         this.datanascimento = datanascimento;
-        this.comprar=comprador;
-        this.vender=vender;
+        this.id=id; //comprador é 0 e vendedor é 1
+        this.registos=registos;
     }
 
     
@@ -34,8 +36,8 @@ public abstract class Utilizador implements Serializable
         this.password=u.getPassword();
         this.morada=u.getMorada();
         this.datanascimento=u.getDatanascimento();
-        this.comprar=u.getComprar();
-        this.vender=u.getVender();
+        this.id=u.getId();
+        this.registos=u.getRegistos();
     }
     
     public Utilizador(){
@@ -44,26 +46,22 @@ public abstract class Utilizador implements Serializable
         this.password=new String();
         this.morada=new String();
         this.datanascimento= new String();
-        this.comprar=new String();
-        this.vender=new String();
+        this.id=0;
+        this.registos=new ArrayList<>();
         
     }
 
-    public String getComprar() {
-        return comprar;
+    public int getId() {
+        return id;
     }
 
-    public void setComprar(String comprar) {
-        this.comprar = comprar;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getVender() {
-        return vender;
-    }
+    
 
-    public void setVender(String vender) {
-        this.vender = vender;
-    }
+    
     
     
     
@@ -108,8 +106,18 @@ public abstract class Utilizador implements Serializable
         this.datanascimento = datanascimento;
     }
    
+      public List<Imovel> getRegistos() {
+        List<Imovel> res = new ArrayList<>();
+        for (Imovel i : this.registos) {
+            res.add(i.Clone());
+        }
+        return res;
+    }
 
-
+      public void setRegistos(List<Imovel> registos) {
+        this.registos = registos;
+    }
+      
 public String toString(){
     StringBuilder s = new StringBuilder();
     
@@ -118,8 +126,9 @@ public String toString(){
     s.append("Password: " + this.getPassword() + "\n");
     s.append("Morada: " + this.getMorada() + "\n");
     s.append("Data de Nascimento: " + this.getDatanascimento() + "\n");
-    s.append("Comprado:" + this.getComprar() + "\n");
-    s.append("vender" + this.getVender() + "\n");
+    s.append("Id:" + this.getId()+ "\n");
+    s.append("Registos:" + this.getRegistos() + "\n");
+    
     
     return s.toString();
 }
@@ -134,7 +143,7 @@ public boolean equals(Object o){
     
     else{
         Utilizador u=(Utilizador) o;
-        return (this.email.equals(u.getEmail()) && this.nome.equals((u.getNome())) && this.password.equals(u.getPassword()) && this.morada.equals(u.getMorada()) && this.datanascimento.equals(u.getDatanascimento()) && this.comprar.equals(u.getComprar()) && this.vender.equals(u.getVender()));
+        return (this.email.equals(u.getEmail()) && this.nome.equals((u.getNome())) && this.password.equals(u.getPassword()) && this.morada.equals(u.getMorada()) && this.datanascimento.equals(u.getDatanascimento()) && this.id==id && this.registos.equals(u.getRegistos()));
     }
     
 }

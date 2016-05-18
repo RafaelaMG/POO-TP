@@ -13,9 +13,62 @@ public abstract class Imovel implements Serializable
     private String rua;
     private String idImovel;
     private String estado;
-    private int preçoP; //preço pedido pelo proprietário 
-    private int preçoM; // preço mínimo que não deve ser visível ao utilizador.
+    private String tipo;
+    private int idP;
+    private int precoP; //preço pedido pelo proprietário 
+    private int precoM; // preço mínimo que não deve ser visível ao utilizador.
 
+   
+    
+    public Imovel(String rua, String idImovel, String estado, String tipo,int idP, int precoP, int precoM) {
+        this.rua = rua;
+        this.estado=estado;
+        this.precoP = precoP;
+        this.precoM = precoM;
+        this.idImovel=idImovel;
+        this.idP = idP;
+        this.tipo = tipo;
+    }
+
+
+    public Imovel(Imovel i){
+        this.rua=i.getRua();
+        this.estado=i.getEstado();
+        this.precoP=i.getPrecoP();
+        this.precoM=i.getPrecoM();
+        this.idImovel=i.getIdImovel();
+        this.tipo = i.getTipo();
+        this.idP = idP;
+    }
+
+
+    public Imovel(){
+        this.rua=new String();
+        this.precoP=0;
+        this.precoM=0;
+        this.idImovel=new String();
+        this.estado=new String();
+        this.tipo = new String();
+        this.idP = 0;
+    }
+    
+   
+     public int getIdP() {
+        return idP;
+    }
+
+    public void setIdP(int idP) {
+        this.idP = idP;
+    }
+    
+     public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    
     public String getIdImovel() {
         return idImovel;
     }
@@ -28,7 +81,7 @@ public abstract class Imovel implements Serializable
         return estado;
     }
     
-    public void setEstadoI(String Estado){
+    public void setEstado(String Estado){
         this.estado=estado;
     }
     public String getRua() {
@@ -39,57 +92,31 @@ public abstract class Imovel implements Serializable
         this.rua = rua;
     }
 
-    public int getPreçoP() {
-        return preçoP;
+    public int getPrecoP() {
+        return precoP;
     }
 
-    public void setPreçoP(int preçoP) {
-        this.preçoP = preçoP;
+    public void setPrecoP(int precoP) {
+        this.precoP = precoP;
     }
 
-    public int getPreçoM() {
-        return preçoM;
+    public int getPrecoM() {
+        return precoM;
     }
 
-    public void setPreçoM(int preçoM) {
-        this.preçoM = preçoM;
-    }
-
-   
-    
-    public Imovel(String rua, String idImovel, String estado, int preçoP, int preçoM) {
-        this.rua = rua;
-        this.estado=estado;
-        this.preçoP = preçoP;
-        this.preçoM = preçoM;
-        this.idImovel=idImovel;
-    }
-
-
-    public Imovel(Imovel i){
-        this.rua=i.getRua();
-        this.estado=i.getEstado();
-        this.preçoP=i.getPreçoP();
-        this.preçoM=i.getPreçoM();
-        this.idImovel=i.getIdImovel();
-    }
-
-
-    public Imovel(){
-        this.rua=new String();
-        this.preçoP=0;
-        this.preçoM=0;
-        this.idImovel=new String();
-        this.estado=new String();
+    public void setPrecoM(int precoM) {
+        this.precoM = precoM;
     }
     
     public String toString(){
         StringBuilder s = new StringBuilder();
         s.append("Rua: " + this.getRua() + "\n");
         s.append("Id do imóvel: " + this.getIdImovel() + "\n");
+        s.append("Id do Proprietário: " + this.getIdP() + "\n");
         s.append("Estado do imóvel " + this.getEstado() + "\n");
-        s.append("Valor pretendido: " + this.preçoP + "\n");
-        s.append("Valor mínimo " + this.preçoM + "\n");
+        s.append("Tipo: " + this.getTipo() + "\n");
+        s.append("Valor pretendido: " + this.precoP + "\n");
+        s.append("Valor mínimo " + this.precoM + "\n");
         return s.toString();
     }
 
@@ -102,7 +129,8 @@ public abstract class Imovel implements Serializable
     
     else{
         Imovel i=(Imovel) o;
-        return (this.rua.equals(i.getRua()) && this.idImovel.equals(i.getIdImovel()) && this.estado.equals(i.getEstado()) && this.preçoM == i.getPreçoM() && this.preçoP == i.getPreçoP());
+        return (this.rua.equals(i.getRua()) && this.idImovel.equals(i.getIdImovel()) && this.estado.equals(i.getEstado()) && this.idP==(i.getIdP())
+                && this.precoM == i.getPrecoM() && this.precoP == i.getPrecoP() && this.tipo.equals(i.getTipo()));
     }
     }
     

@@ -1,12 +1,12 @@
-/*
+
 package poo;
 
 
 
-import static org.junit.Assert.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+//import static org.junit.Assert.*;
+//import org.junit.After;
+//import org.junit.Before;
+//import org.junit.Test;
 import java.util.Set;
 
 
@@ -17,9 +17,9 @@ public class Testes
     private Terreno t;
 
     
-     * Teste principal
+     // Teste principal
      
-    @Test
+   // @Test
     public void mainTest() {
         imo = new Imoobiliaria();
         try {
@@ -63,7 +63,7 @@ public class Testes
             assertTrue(imo.getConsultas().size()>0);
         } catch(Exception e) {
             fail();
-        }
+        }*/
         
         imo.fechaSessao();
         Comprador c = new Comprador();  // Preencher parÃ¢metros do construtor
@@ -83,6 +83,9 @@ public class Testes
             fail();
         }
     }
+
+    private void fail() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
-*/

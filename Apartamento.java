@@ -8,7 +8,8 @@ package poo;
 
 
 
-public class Apartamento extends Imovel
+public class Apartamento extends Imovel implements Habitavel
+
 {
     
     private int tipoA; // atribuitmos inteiros ao tipo (Simples, Duplex, Triplex);
@@ -18,9 +19,15 @@ public class Apartamento extends Imovel
     private int porta;
     private int andar;
     private int garagem; //atribuir 0 ou 1 para caso tenha ou não garagem
+    private int hab = 1;
     
     
-
+    public int getHabitavel(){
+        return hab;
+    
+    }
+   
+ 
 }
 
 

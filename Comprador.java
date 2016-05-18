@@ -12,17 +12,9 @@ public class Comprador extends Utilizador
 {
     private ArrayList <Imovel> listaImoveis;
 
-    public ArrayList<Imovel> getListaImoveis() {
-        return listaImoveis;
-    }
-
-    public void setListaImoveis(ArrayList<Imovel> listaImoveis) {
-        this.listaImoveis = listaImoveis;
-    }
-   
     
-    public Comprador(ArrayList<Imovel> listaImoveis, String email, String nome, String password, String morada, String datanascimento, String comprar, String vender) {
-        super(email, nome, password, morada, datanascimento, comprar, vender);
+    public Comprador(ArrayList<Imovel> listaImoveis, String email, String nome, String password, String morada, String datanascimento, int id, ArrayList<Imovel> reg) {
+        super(email, nome, password, morada, datanascimento, id, reg);
         this.listaImoveis = listaImoveis;
     }
 
@@ -40,6 +32,14 @@ public class Comprador extends Utilizador
         this.listaImoveis= new ArrayList<>();
     }
 
+    public ArrayList<Imovel> getListaImoveis() {
+        return listaImoveis;
+    }
+
+    public void setListaImoveis(ArrayList<Imovel> listaImoveis) {
+        this.listaImoveis = listaImoveis;
+    }
+   
     @Override
     public String toString() {
         return "Comprador{" + "listaImoveis=" + listaImoveis + '}';
