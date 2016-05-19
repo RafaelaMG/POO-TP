@@ -16,10 +16,16 @@ public class Menu {
     // variáveis de instância
     private List<String> opcoes;
     private int op;
+
+    public Menu(List<String> opcoes, int op) {
+        this.opcoes = opcoes;
+        this.op = op;
+    }
     
-    /**
-     * Constructor for objects of class Menu
-     */
+    public Menu(){
+        this.opcoes=new ArrayList<>();
+        this.op=0;
+    }
     public Menu(String[] opcoes) {
         this.opcoes = new ArrayList<String>();
         for (String op : opcoes) 
@@ -27,6 +33,7 @@ public class Menu {
         this.op = 0;
     }
 
+    
     /**
      * Método para apresentar o menu e ler uma opção.
      * 

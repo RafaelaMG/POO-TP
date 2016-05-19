@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,43 +24,30 @@ public class Main {
     
     public static void main(String[] args) {
         Imoobiliaria gp= new Imoobiliaria();
-        Imoobiliaria.initApp();
+        
         menuHomepage(gp);
         
         
 
     }
 
-    public static void menuHomepage(Imoobiliaria gp) {
+   public static void menuHomepage(Imoobiliaria gp) {
         
-        try {
-            gp = Imoobiliaria.leObj("estado.tabemp");
-        } catch (IOException e) {
-            gp = new Imoobiliaria();
-            System.out.println("Não existem dados gravados|\nErro de leitura.");
-        } catch (ClassNotFoundException e) {
-            gp = new Imoobiliaria();
-            System.out.println("Não é possível ler os dados!\nFicheiro com formato desconhecido.");
-        } catch (ClassCastException e) {
-            gp = new Imoobiliaria();
-            System.out.println("Não é possível ler os dados!\nErro de formato.");
-        }
-
         Scanner scan = new Scanner(System.in);
         String saves = "";
         String acaoS = "";
         String acao = "-1";
-
-       // do {
+      
             System.out.print('\u000C');
             System.out.println("-----------------ImOObiliaria-----------------\n");
             System.out.println(" 1 - Fazer Login\n");
             System.out.println(" 2 - Registar\n");
+            System.out.println(" 3 - Consultar aplicação\n");
+           
             System.out.println(" 9 - Gravar\n\n");
             System.out.println(" 0 - Sair                                ");
             System.out.println("-------------------------------------------");
             acao = scan.nextLine();
-
             switch (acao) {
                 case "1":
                     Login(gp);
@@ -67,21 +55,19 @@ public class Main {
                 case "2":
                     Registar(gp);
                     break;
-                case "9": try {
+                /*case "9": try {
                     gp.gravaObj("estado.tabemp");
                     System.out.println("Guardado");
                     menuHomepage(gp);
                 } catch (IOException ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                    break;
+                }*/
                 default:
-                    System.exit(0);
+                    gp.fechaSessao();
                     break;
             }
        
         System.out.println("Saida com sucesso");
-
     }
 
     public static void Login(Imoobiliaria gp) {
@@ -104,7 +90,14 @@ public class Main {
 
         try {
             gp.iniciaSessao(email, password);
-                MenuVendedor(u, gp);
+            for(Utilizador a: gp.getUtilizadores().values()){
+                if(a.getId()== 1 && a.getEmail().equals(email))
+                   menuComprador(a.getId(), gp);
+            else{
+                if(a.getId()==2 && a.getEmail().equals(email))
+                   MenuVendedor(a.getId(),gp);
+                    }
+            }
            }catch (SemAutorizacaoException ex) {
             System.out.println("\n---------------------------------------------");
             System.out.println(ex.getMessage());
@@ -141,6 +134,8 @@ public class Main {
             String nome = " ";
             String morada = " ";
             String datanascimentoS = "";
+            String tipo = "";
+            int t=0;
 
             String DatePattern = "^(?:(31)(\\D)(0?[13578]|1[02])\\2|(29|30)(\\D)(0?[13-9]|1[0-2])\\5|(0?[1-9]|1\\d|2[0-8])(\\D)(0?[1-9]|1[0-2])\\8)((?:1[6-9]|[2-9]\\d)?\\d{2})$|^(29)(\\D)(0?2)\\12((?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:16|[2468][048]|[3579][26])00)$";
 
@@ -160,24 +155,34 @@ public class Main {
                 datanascimentoS = scan.nextLine();
 
             }
-
+            System.out.println(" \nTipo de Utilizador");
+            System.out.println("1 - Comprador\n");
+            System.out.println("2 - Vendedor");
+            tipo = scan.nextLine();
+            t = Integer.parseInt(tipo);
+           
             System.out.print('\u000C');
             System.out.println("-------------------------------------------");
-            System.out.printf("Email: %s; \nPassword: %s; \nNome: %s; \nMorada: %s; \nData de nascimento: %s;\n", email, password, nome, morada, datanascimentoS);
+            System.out.printf("Email: %s; \nPassword: %s; \nNome: %s; \nMorada: %s; \nData de nascimento: %s; \nTipo: %d;\n", email, password, nome, morada, datanascimentoS, t);
             System.out.println("-------------------------------------------");
-            System.out.println(" 1 - Comprador");
-            System.out.println(" 2 - Vendedor\n");
+            System.out.println(" 1 - Registar\n");
+            System.out.println(" 2 - Alterar Dados\n");
             System.out.println(" 0 - Sair");
-
             acao = scan.nextLine();
             
             switch (acao) {
                 case "1":
-                    Utilizador c=new Utilizador(email, nome, password, morada, datanascimentoS,0, new ArrayList()) {
+                    Utilizador c=new Utilizador(email, nome, password, morada, datanascimentoS,t) {
                     };
                     
                     try {
                         gp.registarUtilizador(c);
+                        try {
+                            gp.gravaObj("basedados.obj");
+                            System.out.println("Guardado");
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
                     } catch (UtilizadorExistenteException ex) {
                         System.out.println(ex.getMessage());
                         System.out.println("\n 2 - Tentar Novamente       0 - Sair");
@@ -199,7 +204,7 @@ public class Main {
                     menuHomepage(gp);
 
                 case "2":
-                    Utilizador v = new Utilizador(email, nome, password, morada, datanascimentoS, 1, new ArrayList<Imovel>()){
+                    Utilizador v = new Utilizador(email, nome, password, morada, datanascimentoS, 1){
                     };
                     try {
                         gp.registarUtilizador(v);
@@ -231,7 +236,7 @@ public class Main {
             }
             try{
             gp.gravaObj("basedados.obj");
-            System.out.println("Guardado");}
+            }
             catch(IOException e){
                 System.out.println(e.getMessage());
             }
@@ -240,7 +245,7 @@ public class Main {
         }
     }
 
-    public static void MenuVendedor(Utilizador u,Imoobiliaria gp) {
+    public static void MenuVendedor(int id,Imoobiliaria gp) {
         try {
             Scanner scan = new Scanner(System.in);
 
@@ -255,10 +260,14 @@ public class Main {
 
                 switch (acao) {
                     case "1": 
-                        MenuInsImovel(gp, u);
+                        MenuInsImovel(gp, id);
                 
                         break;
-                    case "2": MenuConsultasImoveis(gp, u);
+                    case "2": 
+                        MenuConsultasImoveis(gp, id);
+                        
+                    default:
+                        menuHomepage(gp);
                 }
 
             
@@ -268,7 +277,7 @@ public class Main {
     }
     
 
-    public static void MenuInsImovel(Imoobiliaria gp, Utilizador u) {
+    public static void MenuInsImovel(Imoobiliaria gp, int id) {
 
         try {
             String nrua;
@@ -292,16 +301,19 @@ public class Main {
                 System.out.println("Estado:");
                 nestado=scan.nextLine();
                 
-                System.out.println("Preço pretendido pelo proprietário:");
-                pp=scan.nextLine();
-                
                 System.out.println("Tipo de imóvel (Moradia|Apartamento|Terreno)");
                 tipo=scan.nextLine();
-                try{
+                
+                System.out.println("Preço pretendido pelo proprietário:");
+                pp=scan.nextLine();
+                 try{
                     nPreçoP=Integer.parseInt(pp);
                 }catch(NumberFormatException e){
                     System.out.println("Não é um inteiro");
+                    System.out.println("\nPreço pretendido pelo proprietário:");
+                pp=scan.nextLine();
                 }
+                           
                 
                 System.out.println("Preço mínimo:");
                 pm=scan.nextLine();
@@ -309,6 +321,8 @@ public class Main {
                     nPreçoMin=Integer.parseInt(pm);
                 }catch(NumberFormatException e){
                     System.out.println("Não é um inteiro");
+                    System.out.println("Preço mínimo:");
+                    pm=scan.nextLine();
                 }
                 
                 
@@ -321,15 +335,15 @@ public class Main {
                     };
                         try {
                             gp.registaImovel(im);
-                            System.out.println("És uma colada mas quando paras de colar...");
                         } catch (ImovelExisteException imo) {
-                            System.err.println(imo.getMessage());
+                            System.out.println(imo.getMessage());
                         } catch (SemAutorizacaoException se) {
-                            System.err.println(se.getMessage());
-                        }
+                            System.out.println("Não tem autorização para registar imóveis");
+                        } MenuConsultasImoveis(gp, id);
                         
-                        break;
-                    default: menuHomepage(gp);
+                        
+                    case "2": menuHomepage(gp);
+                                break;
                        
            }
         } catch (Exception e) {
@@ -340,7 +354,7 @@ public class Main {
    
     
     
-    public static void MenuConsultasImoveis(Imoobiliaria gp, Utilizador u){
+    public static void MenuConsultasImoveis(Imoobiliaria gp, int id){
         String ac;
          String acaoS = "";
         String saves = "";
@@ -383,18 +397,31 @@ public class Main {
                         System.out.println("\n0 - Voltar atrás");
                         System.out.println("\n1 - Editar Estado do Imóvel");
                         System.out.println("\n2 - Remover Imóvel");
-                  
+                        System.out.println("\n3 - Adicionar como favorito");
+                                
                         System.out.println("\n--------------------------------------------------------------");
                         ac = scan.nextLine();
                             switch (ac) {
                             case "0":
-                                MenuConsultasImoveis(gp, u);
+                                MenuConsultasImoveis(gp, id);
                             case "1":
-                                MenuEditarEstado(gp, escolha, u);
+                                MenuEditarEstado(gp, escolha, id);
 
                             case "2":
                                 gp.elmImovel(escolha);
-                                MenuConsultasImoveis(gp, u);
+                                MenuConsultasImoveis(gp, id);
+                                
+                            case "3":
+                    {
+                        try {
+                                gp.setFavorito(escolha.getIdImovel());
+                                System.out.println("Adicionado");
+                        } catch (ImovelInexistenteException ex) {
+                            System.out.println(ex.getMessage());
+                        } catch (SemAutorizacaoException ex) {
+                           System.out.println("Não tem autorização para adicionar aos favoritos");
+                        } MenuConsultasImoveis(gp, id);
+                    } break;
 
                         }
                                
@@ -403,7 +430,7 @@ public class Main {
                     }
                 }
                 
-    public static void MenuEditarEstado(Imoobiliaria gp, Imovel i, Utilizador u){
+    public static void MenuEditarEstado(Imoobiliaria gp, Imovel i, int id){
           try {
             Scanner scan = new Scanner(System.in);
             String acao;
@@ -420,7 +447,7 @@ public class Main {
             
             switch(acao){
                 case "1": gp.setEstado(i.getIdImovel(), nEstado);
-                          MenuConsultasImoveis(gp, u);
+                          MenuConsultasImoveis(gp, id);
                 
                 default: menuHomepage(gp);
                 break;
@@ -432,7 +459,117 @@ public class Main {
           }
     
 }
-        }
+     public static void menuComprador(int id,Imoobiliaria gp) {
+        try {
+            Scanner scan = new Scanner(System.in);
 
+            String acao;
+                System.out.println("----------------Menu Comprador--------------");
+                System.out.println("1-Consultar anúncios");
+                System.out.println("2-Consultar Favoritos");
+                System.out.println("0-Sair");
+                System.out.println("-------------------------------------------");
+                acao = scan.nextLine();
+
+                switch (acao) {
+                    case "1": 
+                        MenuConsultasImoveis(gp, id);
+                
+                        break;
+                    case "2": menuConsultasFav(gp, id);
+                }
+
+            
+        } catch (Exception e) {
+            System.out.println("Erro");
+        }
+    }
+     
+     public static void menuNotUser(int id,Imoobiliaria gp) {
+        try {
+            Scanner scan = new Scanner(System.in);
+
+            String acao;
+                System.out.println("----------------Menu Consultas--------------");
+                System.out.println("1-Consultar anúncios");
+                System.out.println("0-Sair");
+                System.out.println("-------------------------------------------");
+                acao = scan.nextLine();
+
+                switch (acao) {
+                    case "1": 
+                        MenuConsultasImoveis(gp, id);
+                
+                        break;
+                    case "2": menuConsultasFav(gp, id);
+                }
+
+            
+        } catch (Exception e) {
+            System.out.println("Erro");
+        }
+    }
+     
+      public static void menuConsultasFav(Imoobiliaria gp, int id){
+        String ac;
+         String acaoS = "";
+        String saves = "";
+        String acao = "-1";
+        Comprador c = new Comprador();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("-------------Lista de Imóveis--------------\n");  
+        int i=1;
+        TreeSet<Imovel> novo= new TreeSet<>();
+        try {
+            novo=gp.getFavoritos();
+        } catch (SemAutorizacaoException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        for(Utilizador a: gp.getUtilizadores().values()){
+            if(a.getId()==id){
+                for (Imovel s : novo) {    
+                    System.out.println(i + "-" + s.getRua());
+                    i++;
+                }
+            }
+        } 
+        System.out.println("\n--------------------------------------------------------------");
+        System.out.println("\n(Selecione o número do Imóvel que pretende consultar)\n");
+
+
+        System.out.println(" \n0 - Voltar atrás\n");
+
+        acao = scan.nextLine();
+        Imovel escolha;
+        List<Imovel> listImovel = gp.getImoveis();
+        
+          switch (acao) {
+            case "0":
+                menuComprador(id,gp);
+                break;
+            default:
+                int acao2int = Integer.parseInt(acao) - 1;
+
+                if (acao2int >= 0 && acao2int < listImovel.size()) {
+                    escolha = listImovel.get(acao2int);
+                        System.out.println("\n--------------------------------------------------------------");
+                        System.out.println(escolha.toString());
+                        System.out.println("\n--------------------------------------------------------------");
+                        System.out.println("\n0 - Voltar atrás");
+                        System.out.println("\n--------------------------------------------------------------");
+                        ac = scan.nextLine();
+                            switch (ac) {
+                            case "0":
+                                menuConsultasFav(gp, id);
+                            
+
+                        }
+                               
+                    }
+                break;
+                    }
+                }
     
+        }
 

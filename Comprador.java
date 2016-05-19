@@ -13,8 +13,8 @@ public class Comprador extends Utilizador
     private ArrayList <Imovel> listaImoveis;
 
     
-    public Comprador(ArrayList<Imovel> listaImoveis, String email, String nome, String password, String morada, String datanascimento, int id, ArrayList<Imovel> reg) {
-        super(email, nome, password, morada, datanascimento, id, reg);
+    public Comprador(ArrayList<Imovel> listaImoveis, String email, String nome, String password, String morada, String datanascimento, int id) {
+        super(email, nome, password, morada, datanascimento, id);
         this.listaImoveis = listaImoveis;
     }
 

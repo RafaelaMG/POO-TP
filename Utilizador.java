@@ -14,19 +14,19 @@ public abstract class Utilizador implements Serializable
     private String morada;
     private String datanascimento;
     private int id;
-    private List<Imovel> registos;
+    
 
     
     
     
-    public Utilizador(String email, String nome, String password, String morada, String datanascimento, int id, List<Imovel> registos) {
+    public Utilizador(String email, String nome, String password, String morada, String datanascimento, int id) {
         this.email = email;
         this.nome = nome;
         this.password = password;
         this.morada = morada;
         this.datanascimento = datanascimento;
         this.id=id; //comprador é 0 e vendedor é 1
-        this.registos=registos;
+        
     }
 
     
@@ -37,7 +37,7 @@ public abstract class Utilizador implements Serializable
         this.morada=u.getMorada();
         this.datanascimento=u.getDatanascimento();
         this.id=u.getId();
-        this.registos=u.getRegistos();
+        
     }
     
     public Utilizador(){
@@ -47,7 +47,7 @@ public abstract class Utilizador implements Serializable
         this.morada=new String();
         this.datanascimento= new String();
         this.id=0;
-        this.registos=new ArrayList<>();
+        
         
     }
 
@@ -106,17 +106,7 @@ public abstract class Utilizador implements Serializable
         this.datanascimento = datanascimento;
     }
    
-      public List<Imovel> getRegistos() {
-        List<Imovel> res = new ArrayList<>();
-        for (Imovel i : this.registos) {
-            res.add(i.Clone());
-        }
-        return res;
-    }
-
-      public void setRegistos(List<Imovel> registos) {
-        this.registos = registos;
-    }
+      
       
 public String toString(){
     StringBuilder s = new StringBuilder();
@@ -127,7 +117,7 @@ public String toString(){
     s.append("Morada: " + this.getMorada() + "\n");
     s.append("Data de Nascimento: " + this.getDatanascimento() + "\n");
     s.append("Id:" + this.getId()+ "\n");
-    s.append("Registos:" + this.getRegistos() + "\n");
+   
     
     
     return s.toString();
@@ -143,7 +133,7 @@ public boolean equals(Object o){
     
     else{
         Utilizador u=(Utilizador) o;
-        return (this.email.equals(u.getEmail()) && this.nome.equals((u.getNome())) && this.password.equals(u.getPassword()) && this.morada.equals(u.getMorada()) && this.datanascimento.equals(u.getDatanascimento()) && this.id==id && this.registos.equals(u.getRegistos()));
+        return (this.email.equals(u.getEmail()) && this.nome.equals((u.getNome())) && this.password.equals(u.getPassword()) && this.morada.equals(u.getMorada()) && this.datanascimento.equals(u.getDatanascimento()) && this.id==id);
     }
     
 }

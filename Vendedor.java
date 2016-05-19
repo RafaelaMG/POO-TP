@@ -14,6 +14,8 @@ public class Vendedor extends Utilizador
 {
     private HashMap<String, Imovel> imoveisVenda; //Disponível ou Não disponível para venda.
     private ArrayList<Imovel> imoveisVendidos; // Histórico de vendas
+
+    
     
     
     public HashMap<String, Imovel> getImoveisDisponiveis() {
@@ -41,8 +43,8 @@ public class Vendedor extends Utilizador
     }
   
   
-    public Vendedor(HashMap<String, Imovel> imoveisVenda, ArrayList<Imovel> imoveisVendidos, String email, String nome, String password, String morada, String datanascimento, int i, ArrayList<Imovel> reg) {
-        super(email, nome, password, morada, datanascimento,i, reg);
+    public Vendedor(HashMap<String, Imovel> imoveisVenda, ArrayList<Imovel> imoveisVendidos, String email, String nome, String password, String morada, String datanascimento, int i) {
+        super(email, nome, password, morada, datanascimento, i);
         this.imoveisVenda = imoveisVenda;
         this.imoveisVendidos = imoveisVendidos;
     }
