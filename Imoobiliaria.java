@@ -13,6 +13,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +31,8 @@ public class Imoobiliaria implements Serializable {
     private HashMap<String, Utilizador> utilizadores;
     private ArrayList<Imovel> imoveis;
     private Utilizador user;
+    private ArrayList<Imovel> imfavoritos;
+    private Set<Consulta> consultas;
     
 
     public HashMap<String, Utilizador> getUtilizadores() {
@@ -50,10 +55,23 @@ public class Imoobiliaria implements Serializable {
         return res;
     }
     
-    public String getImoveis2(){
+     public ArrayList<Imovel> getImfavoritos() {
+        ArrayList<Imovel> res = new ArrayList<>();
+        for (Imovel a : this.imfavoritos) {
+            res.add(a.Clone());
+        }
+        return res;
+    }
+
+    public void setImfavoritos(ArrayList<Imovel> imfavoritos) {
+        this.imfavoritos = imfavoritos;
+    }
+     
+
+    public String getImoveis2() {
         String res = new String();
-        for(Imovel a: this.imoveis){
-            res=a.getIdImovel();
+        for (Imovel a : this.imoveis) {
+            res = a.getIdImovel();
         }
         return res;
     }
@@ -70,37 +88,37 @@ public class Imoobiliaria implements Serializable {
         this.user = user;
     }
 
-    
-   
-
-    public Imoobiliaria(HashMap<String, Utilizador> utilizadores, ArrayList<Imovel> imoveis, Utilizador user) {
+    public Imoobiliaria(HashMap<String, Utilizador> utilizadores, ArrayList<Imovel> imoveis, Utilizador user, ArrayList<Imovel> imfavoritos) {
         this.utilizadores = utilizadores;
         this.imoveis = imoveis;
-        this.user=user;
-       
+        this.user = user;
+        this.imfavoritos=imfavoritos;
+
     }
 
     public Imoobiliaria(Imoobiliaria m) {
         this.utilizadores = m.getUtilizadores();
         this.imoveis = m.getImoveis();
-        this.user=m.getUser();
-        
+        this.user = m.getUser();
+        this.imfavoritos=m.getImfavoritos();
+
     }
 
     public Imoobiliaria() {
         this.utilizadores = new HashMap<>();
         this.imoveis = new ArrayList<>();
-        this.user= new Utilizador() {
-};
-        
+        this.user = new Utilizador() {
+        };
+        this.imfavoritos=new ArrayList<>();
+
     }
 
     public String toString() {
         StringBuilder s = new StringBuilder();
         s.append("Utilizador: " + this.getUtilizadores() + "\n");
         s.append("Imóvel: " + this.getImoveis() + "\n");
-        s.append("Utilizador: "+ this.getUser() + "\n");
-        
+        s.append("Utilizador: " + this.getUser() + "\n");
+
         return s.toString();
     }
 
@@ -187,7 +205,8 @@ public class Imoobiliaria implements Serializable {
             gravaObj(fich);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
-        } System.exit(0);
+        }
+        System.exit(0);
     }
 
     public boolean registo(String email) {
@@ -216,11 +235,10 @@ public class Imoobiliaria implements Serializable {
         }
     }
 
-    
-    public boolean login(String email, String password){
-     return (this.utilizadores.containsKey(email) && this.utilizadores.get(email).getPassword().equals(password));
+    public boolean login(String email, String password) {
+        return (this.utilizadores.containsKey(email) && this.utilizadores.get(email).getPassword().equals(password));
     }
-    
+
     public void iniciaSessao(String email, String password) throws SemAutorizacaoException {
         if (this.utilizadores.containsKey(email) && this.utilizadores.get(email).getPassword().equals(password)) {
             System.out.println("Login com sucesso");
@@ -229,126 +247,131 @@ public class Imoobiliaria implements Serializable {
         }
     }
 
-    
     public void registaImovel(Imovel im) throws ImovelExisteException, SemAutorizacaoException {
-       if(user.getId()==1)
-           throw new SemAutorizacaoException("Não tem autorização para adicionar imóveis!");
-           
-       else if(this.imoveis.contains(im)){
+        if (user.getId() == 1) {
+            throw new SemAutorizacaoException("Não tem autorização para adicionar imóveis!");
+        } else if (this.imoveis.contains(im)) {
             throw new ImovelExisteException("Este imóvel já existe!");
         }
-           this.imoveis.add(im.Clone());
+        this.imoveis.add(im.Clone());
     }
-    
-   public boolean elmImovel(Imovel nome){
-       return this.imoveis.remove(nome);
-   }
-   
-  
+
+    public boolean elmImovel(Imovel nome) {
+        return this.imoveis.remove(nome);
+    }
 
     public void setEstado(String idImovel, String estado) throws ImovelInexistenteException, SemAutorizacaoException, EstadoInvalidoException {
-       if(!this.imoveis.contains(idImovel))
-          throw new ImovelInexistenteException("O Id de Imóvel não existe!");
-      else if(estado!="Vendido" && estado != "Em venda" && estado!="Reservado"){
-          throw new EstadoInvalidoException("Estado não é válido!");
-      }
-      for(Imovel i: imoveis)
-          if(i.getIdImovel().equals(idImovel)){
-              System.out.println("cena");
-              new Imovel(i) {
-}.setEstado(estado);
-    }
-    }
-
-     public List<Imovel> getImovel(String classe, int preco) {
-        List<Imovel> imo = new ArrayList<Imovel>();
-        
-        for(Imovel i: imoveis){
-            while(i.getPrecoP()<=preco){
-                if(i.getTipo().equals(classe))
-                    imo.add(i);
+        if (!this.imoveis.contains(idImovel)) {
+            throw new ImovelInexistenteException("O Id de Imóvel não existe!");
+        } else if (estado != "Vendido" && estado != "Em venda" && estado != "Reservado") {
+            throw new EstadoInvalidoException("Estado não é válido!");
+        }
+        for (Imovel i : imoveis) {
+            if (i.getIdImovel().equals(idImovel)) {
+                System.out.println("cena");
+                new Imovel(i) {
+                }.setEstado(estado);
             }
         }
-         return imo;
     }
 
-    /*public List<Habitavel> getHabitaveis(int preco) {
-        List<Habitavel> hab = new ArrayList<Habitavel>();
-            Imovel e = new Habitavel() {} 
-      
-        for(Imovel i: imoveis)
-            while(i.getPrecoP()<=preco){
-                if(i.)
-                    hab.add();
-            
+    public List<Imovel> getImovel(String classe, int preco) {
+        List<Imovel> imo = new ArrayList<Imovel>();
+
+        for (Imovel i : imoveis) {
+            while (i.getPrecoP() <= preco) {
+                if (i.getTipo().equals(classe)) {
+                    imo.add(i);
+                }
             }
+        }
+        return imo;
+    }
+
+    public List<Habitavel> getHabitaveis(int preco) {
+        List<Habitavel> hab = new ArrayList<Habitavel>();
+
+        for (Imovel i : imoveis) {
+            while (i.getPrecoP() <= preco) {
+
+                hab.add((Habitavel) i);
+
+            }
+        }
         return hab;
-    }*/
+    }
 
     public Map<Imovel, Vendedor> getMapeamentoImoveis() {
         Map<Imovel, Vendedor> mapImo = new HashMap<Imovel, Vendedor>();
         Vendedor v = new Vendedor();
-        for (Imovel i: imoveis){
-           for(Utilizador u : utilizadores.values()){
-                if(i.getIdP()==u.getId())
+        for (Imovel i : imoveis) {
+            for (Utilizador u : utilizadores.values()) {
+                if (i.getIdP() == u.getId()) {
                     v = (Vendedor) u.Clone();
-                    mapImo.put(i, v);
-           }
-       }
-    return mapImo;
+                }
+                mapImo.put(i, v);
+            }
+        }
+        return mapImo;
     }
 
-   
-    
-    public boolean tipoImovel(String tipo, Imovel i){
-        switch(tipo){
-            case "Terreno" : if( i instanceof Terreno);
-                            break;
-            case "Moradia" : if( i instanceof Moradia);
-                            break;
-            case "Apartamento" : if( i instanceof Apartamento);
-                                break;
-            case "Loja" : if( i instanceof Loja);
-                        break;
+    public boolean tipoImovel(String tipo, Imovel i) {
+        switch (tipo) {
+            case "Terreno":
+                if (i instanceof Terreno);
+                break;
+            case "Moradia":
+                if (i instanceof Moradia);
+                break;
+            case "Apartamento":
+                if (i instanceof Apartamento);
+                break;
+            case "Loja":
+                if (i instanceof Loja);
+                break;
         }
         return false;
     }
-    
-    public String vertipoImovel(String s, Imovel i) throws TipoInexistenteException{
-        if(tipoImovel(s, i))
+
+    public String vertipoImovel(String s, Imovel i) throws TipoInexistenteException {
+        if (tipoImovel(s, i)) {
             return s;
-        else{ 
+        } else {
             throw new TipoInexistenteException("Tipo de imóvel não existe");
+        }
     }
-    }
+
+    public void setFavorito(String idImovel) throws ImovelInexistenteException, SemAutorizacaoException {
+        
     
-     public void setFavorito ( String idImovel )throws ImovelInexistenteException ,SemAutorizacaoException{
-      
-        ArrayList<Imovel> novo= new ArrayList<>();
-        if(user.getId()==2)
+        if (user.getId() == 2) {
             throw new SemAutorizacaoException("Não pode seleccionar como favorito");
-            for(Imovel i: imoveis){
-                if(i.getIdImovel().equals(idImovel)){
-                    novo.add(i.Clone());
-                    
-            } else throw new ImovelInexistenteException("Este imóvel não existe");
+        }
+        for (Imovel i : imoveis) {
+            if (i.getIdImovel().equals(idImovel) && !imfavoritos.contains(i)) {
+                imfavoritos.add(i.Clone());
+
+            } else {
+                throw new ImovelInexistenteException("Este imóvel não existe");
+            }
+        }
     }
-     }
-    
-    public TreeSet <Imovel> getFavoritos () throws SemAutorizacaoException{
-        Utilizador u = new Utilizador() {};
-        ComparatorPreco cp=new ComparatorPreco();
-        
-        TreeSet<Imovel> fav=new TreeSet<>();
-        
-        if(u.getId()==0){
-            for(Imovel i: fav){
-                for(Imovel a: fav){
-               if(cp.compare(i, a)==1)
-            fav.add(a.Clone());
-               else {
-                   fav.add(i.Clone());
-               }
+
+    public TreeSet<Imovel> getFavoritos() throws SemAutorizacaoException {
+        Utilizador u=new Utilizador() {
+};
+        ComparatorPreco cp = new ComparatorPreco();
+
+        TreeSet<Imovel> fav = new TreeSet<>();
+
+        if (u.getId() == 0) {
+            for (Imovel i : imfavoritos) {
+                for (Imovel a : imfavoritos) {
+                    if (cp.compare(i, a) == 1) {
+                        fav.add(a.Clone());
+                    } else {
+                        fav.add(i.Clone());
+                    }
                 }
             }
         } else {
@@ -357,16 +380,27 @@ public class Imoobiliaria implements Serializable {
         return fav;
     }
 
+
     
+public List<Consulta> getConsultas() {
     
-    
-public List<Consulta> getConsultas() throws SemAutorizacaoException {
+   List<Consulta> novo= new ArrayList<>();
+   ComparatorData dt= new ComparatorData();
+   for(Imovel i: imoveis){
+     for(Consulta c: i.getConsulta()){
+         for(Consulta d: i.getConsulta()){
+             if(dt.compare(c, d)==-1)
+                 novo.add(d.Clone());
+             else
+                 novo.add(c.Clone());
+         }
+     }
+     }
+   
+    return novo;
+}
+    public Set<String> getTopImoveis(int n) {
         return null;
     }
-
-
-public Set<String> getTopImoveis(int n) {
-        return null;
-}
 
 }
