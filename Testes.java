@@ -49,7 +49,7 @@ public class Testes
         
         t = new Terreno();  // Preencher parÃ¢metros do construtor
         try {
-           // imo.registaImovel(t);
+            imo.registaImovel(t);
         } catch (Exception e) {
             fail();
         }
@@ -87,5 +87,6 @@ public class Testes
     private void fail() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+   
 }

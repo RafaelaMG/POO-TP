@@ -10,39 +10,49 @@ import java.util.Objects;
 
 public class Comprador extends Utilizador
 {
-    private ArrayList <Imovel> listaImoveis;
+    private ArrayList <String> imfavoritos;
 
     
-    public Comprador(ArrayList<Imovel> listaImoveis, String email, String nome, String password, String morada, String datanascimento, int id) {
+    public Comprador(ArrayList<String> imfavoritos, String email, String nome, String password, String morada, String datanascimento, int id) {
         super(email, nome, password, morada, datanascimento, id);
-        this.listaImoveis = listaImoveis;
+        this.imfavoritos = imfavoritos;
     }
 
     public Comprador(ArrayList<Imovel> listaImoveis) {
-        this.listaImoveis = listaImoveis;
+        this.imfavoritos = imfavoritos;
     }
 
     public Comprador(Comprador c){
         super(c);
-        this.listaImoveis=c.getListaImoveis();
+        this.imfavoritos=c.getImfavoritos();
     }
 
     public Comprador(){
         super();
-        this.listaImoveis= new ArrayList<>();
+        this.imfavoritos= new ArrayList<>();
     }
 
-    public ArrayList<Imovel> getListaImoveis() {
-        return listaImoveis;
+    public ArrayList<String> getImfavoritos() {
+       ArrayList<String> novo= new ArrayList<>();
+        for(String s: imfavoritos)
+            novo.add(s);
+          
+        return novo;
     }
 
     public void setListaImoveis(ArrayList<Imovel> listaImoveis) {
-        this.listaImoveis = listaImoveis;
+        this.imfavoritos = imfavoritos;
+    }
+    
+    public void addFavorito(String idImovel) {
+        if (!imfavoritos.contains(idImovel)) {
+            imfavoritos.add(idImovel);
+        }
     }
    
     @Override
     public String toString() {
-        return "Comprador{" + "listaImoveis=" + listaImoveis + '}';
+        return "Comprador{" + "listaImoveis=" + imfavoritos + '}';
     }
 
     @Override
@@ -63,7 +73,7 @@ public class Comprador extends Utilizador
             return false;
         }
         final Comprador other = (Comprador) obj;
-        if (!Objects.equals(this.listaImoveis, other.listaImoveis)) {
+        if (!Objects.equals(this.imfavoritos, other.imfavoritos)) {
             return false;
         }
         return true;

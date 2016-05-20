@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package poo;
 
 import java.io.FileInputStream;
@@ -16,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -358,22 +354,13 @@ public class Imoobiliaria implements Serializable {
     }
 
     public TreeSet<Imovel> getFavoritos() throws SemAutorizacaoException {
-        Utilizador u=new Utilizador() {
-};
-        ComparatorPreco cp = new ComparatorPreco();
+               
+     TreeSet<Imovel> fav = new TreeSet<Imovel>(new ComparatorPreco());
 
-        TreeSet<Imovel> fav = new TreeSet<>();
-
-        if (u.getId() == 0) {
+        if (user.getId() == 0) {
             for (Imovel i : imfavoritos) {
-                for (Imovel a : imfavoritos) {
-                    if (cp.compare(i, a) == 1) {
-                        fav.add(a.Clone());
-                    } else {
-                        fav.add(i.Clone());
-                    }
-                }
-            }
+               fav.add(i.Clone());
+             }
         } else {
             throw new SemAutorizacaoException("Não tem autorização para aceder aos favoritos");
         }
@@ -381,23 +368,28 @@ public class Imoobiliaria implements Serializable {
     }
 
 
+public void consultar(Imovel i) {
+        Consulta c = new Consulta(new GregorianCalendar());
+        consultas.add(c);
+    }
     
-public List<Consulta> getConsultas() {
+public List<Consulta> getConsultas(){
+
+  List<Consulta> res = new ArrayList<Consulta>();
+  //ORDENAR TODAS AS CONSULTAS
+  Set<Consulta> setConsultas = new TreeSet<Consulta>(new ComparatorData());
+  for (Imovel imovel: imoveis) {
+    for(Consulta consulta: imovel.getConsulta()){
+      setConsultas.add(consulta.clone());
+    }    
+   }
     
-   List<Consulta> novo= new ArrayList<>();
-   ComparatorData dt= new ComparatorData();
-   for(Imovel i: imoveis){
-     for(Consulta c: i.getConsulta()){
-         for(Consulta d: i.getConsulta()){
-             if(dt.compare(c, d)==-1)
-                 novo.add(d.Clone());
-             else
-                 novo.add(c.Clone());
-         }
-     }
-     }
-   
-    return novo;
+   Iterator<Consulta> iterator = setConsultas.iterator();   
+   for (int i = 0; i <= 10 && iterator.hasNext(); i++ ) {
+      res.add(iterator.next());           
+   }
+
+   return res;
 }
     public Set<String> getTopImoveis(int n) {
         return null;
