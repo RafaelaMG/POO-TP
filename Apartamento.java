@@ -22,8 +22,8 @@ public class Apartamento extends Imovel implements Habitavel
     private int andar;
     private String garagem; //atribuir 0 ou 1 para caso tenha ou não garagem
 
-    public Apartamento(int tipoA, double areaT, int quartosA, int wcA, int porta, int andar, String garagem,List<Consulta> cons, String rua, String idImovel, String estado, String tipo, int idP, int precoP, int precoM) {
-        super(cons,rua, idImovel, estado, tipo, idP, precoP, precoM);
+    public Apartamento(int tipoA, double areaT, int quartosA, int wcA, int porta, int andar, String garagem,List<Consulta> cons, String rua, String idImovel, String estado, String tipo, int precoP, int precoM) {
+        super(cons, rua, idImovel, estado, tipo, wcA, precoP, precoM);
         this.tipoA = tipoA;
         this.areaT = areaT;
         this.quartosA = quartosA;

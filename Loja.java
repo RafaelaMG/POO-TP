@@ -18,8 +18,8 @@ public class Loja extends Apartamento
    private int portaL; 
    private int habit; // se é habitável ou não
 
-    public Loja(double areaL, int wc, String negocio, int portaL, int habit, int tipoA, double areaT, int quartosA, int wcA, int porta, int andar, String garagem,List<Consulta> cons, String rua, String idImovel, String estado, String tipo, int idP, int precoP, int precoM) {
-        super(tipoA, areaT, quartosA, wcA, porta, andar, garagem,cons, rua, idImovel, estado, tipo, idP, precoP, precoM);
+    public Loja(double areaL, int wc, String negocio, int portaL, int habit, int tipoA, double areaT, int quartosA, int wcA, int porta, int andar, String garagem,List<Consulta> cons, String rua, String idImovel, String estado, String tipo,int precoP, int precoM) {
+        super(tipoA, areaT, quartosA, wcA, porta, andar, garagem,cons, rua, idImovel, estado, tipo, precoP, precoM);
         this.areaL = areaL;
         this.wc = wc;
         this.negocio = negocio;

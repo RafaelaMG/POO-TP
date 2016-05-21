@@ -43,8 +43,8 @@ public class Vendedor extends Utilizador
     }
   
   
-    public Vendedor(HashMap<String, Imovel> imoveisVenda, ArrayList<Imovel> imoveisVendidos, String email, String nome, String password, String morada, String datanascimento, int i) {
-        super(email, nome, password, morada, datanascimento, i);
+    public Vendedor(HashMap<String, Imovel> imoveisVenda, ArrayList<Imovel> imoveisVendidos, String email, String nome, String password, String morada, String datanascimento) {
+        super(email, nome, password, morada, datanascimento);
         this.imoveisVenda = imoveisVenda;
         this.imoveisVendidos = imoveisVendidos;
     }

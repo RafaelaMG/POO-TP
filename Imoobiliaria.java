@@ -8,10 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,8 +15,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Imoobiliaria implements Serializable {
 
@@ -217,19 +211,7 @@ public class Imoobiliaria implements Serializable {
         }
     }
 
-    public void addUtilizadores(Set<Utilizador> user) {
-        Utilizador e = new Utilizador() {
-        };
-        for (Iterator<Utilizador> it = user.iterator(); it.hasNext();) {
-            e = it.next();
-            try {
-                registarUtilizador(e.Clone());
-            } catch (UtilizadorExistenteException ex) {
-                System.out.println(ex.getMessage());;
-
-            }
-        }
-    }
+   
 
     public boolean login(String email, String password) {
         return (this.utilizadores.containsKey(email) && this.utilizadores.get(email).getPassword().equals(password));
@@ -244,7 +226,7 @@ public class Imoobiliaria implements Serializable {
     }
 
     public void registaImovel(Imovel im) throws ImovelExisteException, SemAutorizacaoException {
-        if (user.getId() == 1) {
+        if (checkVendedor()) {
             throw new SemAutorizacaoException("Não tem autorização para adicionar imóveis!");
         } else if (this.imoveis.contains(im)) {
             throw new ImovelExisteException("Este imóvel já existe!");
@@ -295,7 +277,7 @@ public class Imoobiliaria implements Serializable {
         return hab;
     }
 
-    public Map<Imovel, Vendedor> getMapeamentoImoveis() {
+   /* public Map<Imovel, Vendedor> getMapeamentoImoveis() {
         Map<Imovel, Vendedor> mapImo = new HashMap<Imovel, Vendedor>();
         Vendedor v = new Vendedor();
         for (Imovel i : imoveis) {
@@ -307,7 +289,7 @@ public class Imoobiliaria implements Serializable {
             }
         }
         return mapImo;
-    }
+    }*/
 
     public boolean tipoImovel(String tipo, Imovel i) {
         switch (tipo) {
@@ -335,8 +317,7 @@ public class Imoobiliaria implements Serializable {
         }
     }
 
-    public void setFavorito(String idImovel) throws ImovelInexistenteException, SemAutorizacaoException {
-     
+    public void setFavorito(String idImovel) throws ImovelInexistenteException, SemAutorizacaoException{
      if (checkComprador()) {
             if (imoveis.contains(idImovel)) {
                 Comprador c = (Comprador) user;
@@ -345,34 +326,51 @@ public class Imoobiliaria implements Serializable {
                 throw new ImovelInexistenteException("Este imóvel não existe");
             }
         } else {
-            throw new SemAutorizacaoException("Não tem autorização para adicionar favoritos");
+            throw new SemAutorizacaoException("Falta de privilégios");
         }
     }
 
     public boolean checkComprador(){
-       return (user!=null && user.getId()==1);
+       return (user instanceof Comprador);
             
     }
-    public TreeSet<Imovel> getFavoritos() throws SemAutorizacaoException {
+    
+    public boolean checkVendedor(){
+        return (user instanceof Vendedor);
+    }
+   
+    /* public TreeSet<Imovel> getFavoritos(){
         TreeSet<Imovel> res=new TreeSet<>();
         if (checkComprador()) {     
            TreeSet<Imovel> fav = new TreeSet<Imovel>(new ComparatorPreco());
            Comprador c=(Comprador) user;
            ArrayList<String> favoritos=c.getImfavoritos();
-            for (Imovel i: imfavoritos ) {
-               if(favoritos.contains(i.getIdImovel()))
+            for(Imovel i: imoveis){
+            if(favoritos.contains(i.getIdImovel()))
                    fav.add(i.Clone());
-             }
+            }
+             
             Iterator<Imovel> iterator = fav.descendingIterator();   
             for (int i = 0; i <= 10 && iterator.hasNext(); i++ ) {
             res.add(iterator.next()); }
-        } else {
-            throw new SemAutorizacaoException("Não tem autorização para aceder aos favoritos");
-        }
+        } 
         return res;
-    }
+    }*/
+   /*public TreeSet<Imovel> getFavoritos() throws SemAutorizacaoException {
 
+        if (checkComprador()) {
+            TreeSet<Imovel> novo = new TreeSet<>(new ComparatorPreco());
 
+            Comprador c = (Comprador) user;
+            TreeSet<Imovel> imvs = c.getImfavoritos().
+                    
+
+            return imvs;
+
+        } else {
+            throw new SemAutorizacaoException("Não está autenticado como comprador.");
+        }
+    }*/
     
 public List<Consulta> getConsultas(){
 
