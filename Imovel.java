@@ -22,6 +22,8 @@ public abstract class Imovel implements Serializable
     private List<Consulta> consultas;
     
 
+    
+
    
     
     public Imovel(List<Consulta> consultas, String rua, String idImovel, String estado, String tipo,int idP, int precoP, int precoM) {
@@ -33,6 +35,7 @@ public abstract class Imovel implements Serializable
         this.idImovel=idImovel;
         this.idP = idP;
         this.tipo = tipo;
+        
         
     }
 
@@ -63,8 +66,11 @@ public abstract class Imovel implements Serializable
         this.tipo = new String();
         this.idP = 0;
         
+        
     }
+    
 
+  
     
     public List<Consulta> getConsulta() {
         List<Consulta> cons = new ArrayList<Consulta>();
@@ -112,7 +118,7 @@ public abstract class Imovel implements Serializable
     }
     
     public void setEstado(String Estado){
-        this.estado=estado;
+        this.estado=Estado;
     }
     public String getRua() {
         return rua;
@@ -148,6 +154,7 @@ public abstract class Imovel implements Serializable
         s.append("Valor pretendido: " + this.precoP + "\n");
         s.append("Valor mínimo " + this.precoM + "\n");
         s.append("Consultas:" + this.consultas + "\n");
+       
         return s.toString();
     }
 
@@ -168,6 +175,8 @@ public abstract class Imovel implements Serializable
     public Imovel Clone(){
         return new Imovel(this) {};
     }
+
+    
 
 }
 

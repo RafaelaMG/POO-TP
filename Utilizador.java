@@ -13,12 +13,13 @@ public abstract class Utilizador implements Serializable
     private String password;
     private String morada;
     private String datanascimento;
+    private int id;
   
 
     
     
     
-    public Utilizador(String email, String nome, String password, String morada, String datanascimento) {
+    public Utilizador(String email, String nome, String password, String morada, String datanascimento, int id) {
         this.email = email;
         this.nome = nome;
         this.password = password;
@@ -35,6 +36,7 @@ public abstract class Utilizador implements Serializable
         this.password=u.getPassword();
         this.morada=u.getMorada();
         this.datanascimento=u.getDatanascimento();
+        this.id=u.getId();
         
         
     }
@@ -45,9 +47,17 @@ public abstract class Utilizador implements Serializable
         this.password=new String();
         this.morada=new String();
         this.datanascimento= new String();
+        this.id=0;
         
         
-        
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     
@@ -108,6 +118,7 @@ public String toString(){
     s.append("Password: " + this.getPassword() + "\n");
     s.append("Morada: " + this.getMorada() + "\n");
     s.append("Data de Nascimento: " + this.getDatanascimento() + "\n");
+    s.append("Id: " + this.getId() + "\n");
     
    
     
@@ -125,7 +136,7 @@ public boolean equals(Object o){
     
     else{
         Utilizador u=(Utilizador) o;
-        return (this.email.equals(u.getEmail()) && this.nome.equals((u.getNome())) && this.password.equals(u.getPassword()) && this.morada.equals(u.getMorada()) && this.datanascimento.equals(u.getDatanascimento()));
+        return (this.email.equals(u.getEmail()) && this.nome.equals((u.getNome())) && this.password.equals(u.getPassword()) && this.morada.equals(u.getMorada()) && this.datanascimento.equals(u.getDatanascimento()) && this.id==u.getId());
     }
     
 }

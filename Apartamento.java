@@ -14,7 +14,7 @@ public class Apartamento extends Imovel implements Habitavel
 
 {
     
-    private int tipoA; // atribuitmos inteiros ao tipo (Simples, Duplex, Triplex);
+    private String tipoA; // atribuitmos inteiros ao tipo (Simples, Duplex, Triplex);
     private double areaT; // area total do apartamento;
     private int quartosA; 
     private int wcA;
@@ -22,7 +22,7 @@ public class Apartamento extends Imovel implements Habitavel
     private int andar;
     private String garagem; //atribuir 0 ou 1 para caso tenha ou não garagem
 
-    public Apartamento(int tipoA, double areaT, int quartosA, int wcA, int porta, int andar, String garagem,List<Consulta> cons, String rua, String idImovel, String estado, String tipo, int precoP, int precoM) {
+    public Apartamento(double areaT, int quartosA, int wcA, int porta, int andar, String garagem,List<Consulta> cons, String rua, String idImovel, String estado, String tipo, int precoP, int precoM) {
         super(cons, rua, idImovel, estado, tipo, wcA, precoP, precoM);
         this.tipoA = tipoA;
         this.areaT = areaT;
@@ -46,7 +46,7 @@ public class Apartamento extends Imovel implements Habitavel
 
     public Apartamento() {
         super();
-        this.tipoA = 0;
+        this.tipoA = new String();
         this.areaT = 0.0;
         this.quartosA = 0;
         this.wcA = 0;
@@ -55,7 +55,7 @@ public class Apartamento extends Imovel implements Habitavel
         this.garagem = new String();
     }
 
-    public int getTipoA() {
+    public String getTipoA() {
         return tipoA;
     }
 
@@ -83,7 +83,7 @@ public class Apartamento extends Imovel implements Habitavel
         return areaT;
     }
 
-    public void setTipoA(int tipoA) {
+    public void setTipoA(String tipoA) {
         this.tipoA = tipoA;
     }
 
@@ -111,53 +111,31 @@ public class Apartamento extends Imovel implements Habitavel
         this.garagem = garagem;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        return hash;
+   public String toString(){
+        StringBuilder s = new StringBuilder();
+        s.append("Tipo de Apartamento " + this.getTipoA() + "\n");
+        s.append("Número de quartos " + this.getQuartos() + "\n");
+        s.append("Número de casas de banho: " + this.getWc() + "\n");
+        s.append("Porta: " + this.getPorta()+ "\n");
+        s.append("Andar: " + this.getAndar()+ "\n");
+        s.append("Garagem: " + this.getGaragem() + "\n");
+       
+        return s.toString();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Apartamento other = (Apartamento) obj;
-        if (this.tipoA != other.tipoA) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.areaT) != Double.doubleToLongBits(other.areaT)) {
-            return false;
-        }
-        if (this.quartosA != other.quartosA) {
-            return false;
-        }
-        if (this.wcA != other.wcA) {
-            return false;
-        }
-        if (this.porta != other.porta) {
-            return false;
-        }
-        if (this.andar != other.andar) {
-            return false;
-        }
-        if (this.garagem.equals(garagem)) {
-            return false;
-        }
+   public boolean equals(Object o){
+    if(this==o)
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Apartamento{" + "tipoA=" + tipoA + ", areaT=" + areaT + ", quartosA=" + quartosA + ", wcA=" + wcA + ", porta=" + porta + ", andar=" + andar + ", garagem=" + garagem + '}';
+    
+    if((o==null)|| this.getClass() != o.getClass())
+        return false;
+    
+    else{
+        Apartamento u=(Apartamento) o;
+        return (this.tipoA.equals(u.getTipoA()) && this.quartosA==u.getQuartos() && this.wcA== u.getWc() && this.porta==u.getPorta() && this.andar==u.getAndar() && this.garagem.equals(u.getGaragem()));
     }
     
+}
 
         public Apartamento clone(){
         return new Apartamento(this);

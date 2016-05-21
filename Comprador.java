@@ -13,8 +13,8 @@ public class Comprador extends Utilizador
     private ArrayList <String> imfavoritos;
 
     
-    public Comprador(ArrayList<String> imfavoritos, String email, String nome, String password, String morada, String datanascimento) {
-        super(email, nome, password, morada, datanascimento);
+    public Comprador(ArrayList<String> imfavoritos, String email, String nome, String password, String morada, String datanascimento, int id) {
+        super(email, nome, password, morada, datanascimento, id);
         this.imfavoritos = imfavoritos;
     }
 
@@ -49,35 +49,27 @@ public class Comprador extends Utilizador
         
     }
    
-    @Override
-    public String toString() {
-        return "Comprador{" + "listaImoveis=" + imfavoritos + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Comprador other = (Comprador) obj;
-        if (!Objects.equals(this.imfavoritos, other.imfavoritos)) {
-            return false;
-        }
+   public boolean equals(Object o){
+    if(this==o)
         return true;
-    }
     
+    if((o==null)|| this.getClass() != o.getClass())
+        return false;
+    
+    else{
+        Comprador i=(Comprador) o;
+        return (this.imfavoritos.equals(i.getImfavoritos()));
+    }
+    }
+   
+   
+   public String toString(){
+        StringBuilder s = new StringBuilder();
+        s.append("Favoritos: " + this.getImfavoritos() + "\n");
+        
+        return s.toString();
+    }
+
     public Comprador Clone(){
         return new Comprador(this);
     }

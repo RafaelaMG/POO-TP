@@ -176,7 +176,7 @@ public class Main {
             switch (acao) {
                 case "1":
                    
-                    Comprador c=new Comprador(new ArrayList<String>(), email, nome, password, morada, datanascimentoS) {
+                    Comprador c=new Comprador(new ArrayList<String>(), email, nome, password, morada, datanascimentoS,1) {
                     };
                     
                     try {
@@ -204,7 +204,7 @@ public class Main {
                     
                 case "2": 
                      
-                            Vendedor v=new Vendedor(new HashMap<String, Imovel>(), new ArrayList<Imovel>(), email, nome, password, morada, datanascimentoS) {
+                            Vendedor v=new Vendedor(new HashMap<String, Imovel>(), new ArrayList<Imovel>(), email, nome, password, morada, datanascimentoS,2) {
                             };
                             try {
                         gp.registarUtilizador(v);
@@ -235,7 +235,7 @@ public class Main {
 
             }
             try{
-            gp.gravaObj("basedados.obj");
+            gp.gravaObj("estado.tabemp");
             }
             catch(IOException e){
                 System.out.println(e.getMessage());
@@ -254,7 +254,6 @@ public class Main {
                 System.out.println("1-Inserir imóvel");
                 System.out.println("2-Consultar anúncio");
                 System.out.println("3-Ultimas consultas");
-                System.out.println("5-Estatísticas");
                 System.out.println("0-Sair");
                 System.out.println("-------------------------------------------");
                 acao = scan.nextLine();
@@ -280,11 +279,11 @@ public class Main {
     }
     
 
-    public static void MenuInsImovel(Imoobiliaria gp, Utilizador u) {
-
-        try {
-            Imovel a=new Imovel() {
-};
+    
+  public static void MenuInsImovel(Imoobiliaria gp, Utilizador u) {
+   try {
+            Scanner scan = new Scanner(System.in);
+            String acao;
             String nrua="";
             String nidImovel="";
             String nestado="";
@@ -294,44 +293,27 @@ public class Main {
             int nPreçoMin = 0;
             String tipo=""; 
             Date data;
-            int tipoA = 0, quartosA = 0, wcA = 0, portaA = 0, andarA = 0;
+            
+            int quartosA = 0, wcA = 0, portaA = 0, andarA = 0;
             double areaT = 0;
             String garagem="";
-         
-            Scanner scan = new Scanner(System.in);
-            String acao;
-                System.out.println("-------------Inserir Imóvel--------------\n");
-                
-                System.out.println("Qual o tipo de imóvel que pretende registar?\n");
-                System.out.println("1-Apartamento | 2-Moradia | 3-Terreno");
-                acao=scan.nextLine();
-                
-                switch(acao){ 
-                    case"1":
+
+            System.out.print('\u000C');
+            System.out.println("-----------------Registar Imóvel-----------------");
+
                 System.out.println("Rua:");
                 nrua=scan.nextLine();
                 
                 System.out.println("Atribua um ID ao imóvel:");
                 nidImovel=scan.nextLine();
                 
-                System.out.println("Estado:");
+                System.out.println("Estado: ");
                 nestado=scan.nextLine();
                 
-                System.out.println("1-Simples | 2-Duplex | 3-Triplex");
-                tipoA=scan.nextInt();
+                System.out.println("Apartamento | Moradia | Loja | Terreno");
+                tipo=scan.nextLine();
                 
-                System.out.println("Quantos quartos: ");
-                quartosA=scan.nextInt();
-                
-                System.out.println("Porta:");
-                portaA=scan.nextInt();
-                
-                System.out.println("Andar: ");
-                andarA=scan.nextInt();
-                
-                System.out.println("Tem garagem?");
-                garagem=scan.nextLine();
-                
+              
                System.out.println("Preço pretendido pelo proprietário:");
                 pp=scan.nextLine();
                  try{
@@ -353,36 +335,35 @@ public class Main {
                     pm=scan.nextLine();
                 }
         
-                tipo="Apartamento";
-        }
-                System.out.println("------------------------------------------");
                 
-                System.out.println("1-Registar imóvel       2-Sair\n");
-                acao=scan.nextLine();
-                switch (acao) {
-                    case "1": Imovel im= new Imovel(new ArrayList<Consulta>(), nrua, nidImovel, nestado, tipo, wcA, nPreçoP, nPreçoP) {
-                    };
-                        try {
-                            gp.registaImovel(im);
-                        } catch (ImovelExisteException imo) {
-                            System.out.println(imo.getMessage());
-                        } catch (SemAutorizacaoException se) {
-                            System.out.println("Não tem autorização para registar imóveis");
-                        } MenuConsultasImoveis(gp, u);
-                        
-                        
-                    case "2": menuHomepage(gp);
-                                break;
-                       
-           }
-        } catch (Exception e) {
-            System.out.println("Fez PUM");
+            System.out.print('\u000C');
+            System.out.println("-------------------------------------------");
+            System.out.println("\n-------------------------------------------");
+            Imovel im = new Imovel(new ArrayList<Consulta>(), nrua, nidImovel, nestado, tipo, wcA, nPreçoP, nPreçoP){};
+
+            System.out.println(" 1 - Registar");
+            System.out.println(" 0 - Sair\n");
+
+            acao = scan.nextLine();
+
+            switch (acao) {
+                case "1":
+                    gp.registaImovel(im);
+
+                    MenuConsultasImoveis(gp, u);
+                    break;
+
+
+                default:
+                    menuHomepage(gp);
+                    break;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
+
+    }   
    
-    
-    
     public static void MenuConsultasImoveis(Imoobiliaria gp, Utilizador u){
         String ac;
          String acaoS = "";
@@ -414,13 +395,7 @@ public class Main {
                     escolha = listImovel.get(acao2int);
                     System.out.println("\n--------------------------------------------------------------");
                  
-                    
-                        System.out.println("\nRua: " + escolha.getRua());
-                        System.out.println("\nId do Imóvel: " + escolha.getIdImovel());
-                        System.out.println("\nEstado: " + escolha.getEstado());
-                        System.out.println("\nPreço pretendido pelo proprietário: " + escolha.getPrecoP());
-                        System.out.println("\nPreço Mínimo: " + escolha.getPrecoM());
-                        System.out.println("\nTipo de Imóvel: " + escolha.getTipo());
+                        System.out.println(escolha);
                         Consulta c =new Consulta();
                         gp.adicionaConsulta(c, escolha);
                         System.out.println("\n--------------------------------------------------------------");
@@ -443,17 +418,27 @@ public class Main {
                                 MenuConsultasImoveis(gp, u);
                                 break;
                                 
-                            case "3":
-//                             gp.setFavorito(escolha.getIdImovel());
-                             menuComprador(u,gp);
-                                break;
+                            case "3": {
+                        try {
+                            gp.setFavorito(escolha.getIdImovel());
+                            System.out.println("Favorito adicionado");
+                            menuComprador(u, gp);
+                        } catch (ImovelInexistenteException | SemAutorizacaoException ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    }
+                               
+            
+                            default:
+                                menuHomepage(gp);
+                          
                     }
                 }
           }
     }
                 
     public static void MenuEditarEstado(Imoobiliaria gp, Imovel i, Utilizador u){
-          try {
+         
             Scanner scan = new Scanner(System.in);
             String acao;
             String acaoS = "-1";
@@ -468,7 +453,18 @@ public class Main {
             acao=scan.nextLine();
             
             switch(acao){
-                case "1": gp.setEstado(i.getIdImovel(), nEstado);
+                case "1": {
+                try {
+                    gp.setEstado(i.getIdImovel(), nEstado);
+                    MenuConsultasImoveis(gp, u);
+                } catch (ImovelInexistenteException ex) {
+                    System.out.println(ex.getMessage());
+                } catch (SemAutorizacaoException ex) {
+                    System.out.println(ex.getMessage());
+                } catch (EstadoInvalidoException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
                           MenuConsultasImoveis(gp, u);
                 
                 default: menuHomepage(gp);
@@ -476,11 +472,10 @@ public class Main {
             }
             
             
-          }catch(Exception e){
-              System.out.println("Erro");
+        
           }
     
-}
+
      public static void menuComprador(Utilizador u,Imoobiliaria gp) {
         try {
             Scanner scan = new Scanner(System.in);
@@ -499,41 +494,69 @@ public class Main {
                 
                         
                     case "2": 
-//                       MenuFavoritos(gp, u);
+                      MenuFavoritos(gp, u);
                      
                 }
 
             
         } catch (Exception e) {
-            System.out.println("Erro");
+            System.out.println("Erro Comprador");
         }
     }
      
      public static void menuNotUser(Imoobiliaria gp) {
-        try {
-            Scanner scan = new Scanner(System.in);
+        String ac;
+         String acaoS = "";
+        String saves = "";
+        String acao = "-1";
+        Scanner scan = new Scanner(System.in);
+        System.out.println("-------------Lista de Imóveis--------------\n");  
+        int i=1;
+        for (Imovel s : gp.getImoveis()) {
+            System.out.println(i + "-" + s.getRua());
+            i++;
+        } System.out.println("\n--------------------------------------------------------------");
+        System.out.println("\n(Selecione o número do Imóvel que pretende consultar)\n");
 
-            String acao;
-                System.out.println("----------------Menu Consultas--------------");
-                System.out.println("1-Consultar anúncios");
-                System.out.println("0-Sair");
-                System.out.println("-------------------------------------------");
-                acao = scan.nextLine();
 
-                switch (acao) {
-                    case "1": 
-                      //  MenuConsultasImoveis(gp,id);
-                
-                        break;
-                    
-                }
+        System.out.println(" \n0 - Voltar atrás\n");
 
+        acao = scan.nextLine();
+        Imovel escolha;
+        List<Imovel> listImovel = gp.getImoveis();
+          switch (acao) {
+            case "0":
+                menuHomepage(gp);
+                break;
+            default:
+                int acao2int = Integer.parseInt(acao) - 1;
+
+                if (acao2int >= 0 && acao2int < listImovel.size()) {
+                    escolha = listImovel.get(acao2int);
+                    System.out.println("\n--------------------------------------------------------------");
+                 
+                        System.out.println(escolha);
+                        Consulta c =new Consulta();
+                        gp.adicionaConsulta(c, escolha);
+                        System.out.println("\n--------------------------------------------------------------");
+                        System.out.println("\n0 - Voltar atrás");
+                        
+                                
+                        System.out.println("\n--------------------------------------------------------------");
+                        ac = scan.nextLine();
+                            switch (ac) {
+                                default :
+                                menuHomepage(gp);
+                                break;
+                           
+                    }
+                               
             
-        } catch (Exception e) {
-            System.out.println("Erro");
-        }
-    }
-     
+                            
+                          
+                    }
+                }
+          }
         
          
     
@@ -553,15 +576,15 @@ public class Main {
             
         }
      
-/*public static void MenuFavoritos(Imoobiliaria gp, Utilizador u){
+public static void MenuFavoritos(Imoobiliaria gp, Utilizador u){
         
-    System.out.println("-------------Favoritos--------------\n");
-                if(u instanceof Comprador)
-            System.out.println(gp.getFavoritos());
+    System.out.println("-------------Favoritos------------------\n");
+    
+        try {
+            for(Imovel s: gp.getFavoritos())
+                System.out.println(s);
+        } catch (SemAutorizacaoException ex) {
+            System.out.println(ex.getMessage());
+        }
             }
-
-
-
-}*/
 }
-

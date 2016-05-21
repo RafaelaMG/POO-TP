@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Moradia extends Imovel implements Habitavel
 {
-   private int tipo; //vamos atribuir inteiros aos tipos (isolada, geminada, banda, gaveto)
+   
    private double areaImpl; //área de implantação 
    private double areaCoberta; //área total coberta 
    private double areaTerreno; //área do terreno à volta
@@ -19,9 +19,9 @@ public class Moradia extends Imovel implements Habitavel
    private int wc;
    private int porta; //número da porta
 
-    public Moradia(int tipom, double areaImpl, double areaCoberta, double areaTerreno, int quartos, int wc, int porta, List<Consulta> cons, String rua, String idImovel, String estado, String tipo, int idP, int precoP, int precoM) {
+    public Moradia( double areaImpl, double areaCoberta, double areaTerreno, int quartos, int wc, int porta, List<Consulta> cons, String rua, String idImovel, String estado, String tipo, int idP, int precoP, int precoM) {
         super(cons ,rua, idImovel, estado, tipo, idP, precoP, precoM);
-        this.tipo = tipom;
+        
         this.areaImpl = areaImpl;
         this.areaCoberta = areaCoberta;
         this.areaTerreno = areaTerreno;
@@ -33,7 +33,7 @@ public class Moradia extends Imovel implements Habitavel
 
     public Moradia(Moradia i) {
         super(i);
-        this.tipo = i.getTipom();
+       
         this.areaImpl = i.getAreaImpl();
         this.areaCoberta = i.getAreaCoberta();
         this.areaTerreno = i.getAreaTerreno();
@@ -44,7 +44,7 @@ public class Moradia extends Imovel implements Habitavel
 
     public Moradia() {
         super();
-        this.tipo = 0;
+        
         this.areaImpl = 0.0;
         this.areaCoberta = 0.0;
         this.areaTerreno = 0.0;
@@ -69,9 +69,7 @@ public class Moradia extends Imovel implements Habitavel
     return areaT;  
     }
 
-    public int getTipom() {
-        return tipo;
-    }
+   
 
     public double getAreaImpl() {
         return areaImpl;
@@ -89,9 +87,7 @@ public class Moradia extends Imovel implements Habitavel
         return porta;
     }
 
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
-    }
+   
 
     public void setAreaImpl(double areaImpl) {
         this.areaImpl = areaImpl;
@@ -117,52 +113,31 @@ public class Moradia extends Imovel implements Habitavel
         this.porta = porta;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        return hash;
+   public String toString(){
+        StringBuilder s = new StringBuilder();
+        s.append("Area de Implantação " + this.getAreaImpl() + "\n");
+        s.append("Area coberta " + this.getAreaCoberta() + "\n");
+        s.append("Area de terreno: " + this.getAreaTerreno()+ "\n");
+        s.append("Porta: " + this.getPorta()+ "\n");
+        s.append("Quartos: " + this.getQuartos()+ "\n");
+       
+       
+        return s.toString();
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Moradia other = (Moradia) obj;
-        if (this.tipo != other.tipo) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.areaImpl) != Double.doubleToLongBits(other.areaImpl)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.areaCoberta) != Double.doubleToLongBits(other.areaCoberta)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.areaTerreno) != Double.doubleToLongBits(other.areaTerreno)) {
-            return false;
-        }
-        if (this.quartos != other.quartos) {
-            return false;
-        }
-        if (this.wc != other.wc) {
-            return false;
-        }
-        if (this.porta != other.porta) {
-            return false;
-        }
+   
+   public boolean equals(Object o){
+    if(this==o)
         return true;
+    
+    if((o==null)|| this.getClass() != o.getClass())
+        return false;
+    
+    else{
+        Moradia u=(Moradia) o;
+        return (this.areaImpl==u.getAreaImpl() && this.areaCoberta==u.getAreaCoberta()&& this.areaTerreno==u.getAreaTerreno() && this.porta==u.getPorta() && this.quartos==u.getQuartos());
     }
-
-    @Override
-    public String toString() {
-        return "Moradia{" + "tipo=" + tipo + ", areaImpl=" + areaImpl + ", areaCoberta=" + areaCoberta + ", areaTerreno=" + areaTerreno + ", quartos=" + quartos + ", wc=" + wc + ", porta=" + porta + '}';
-    }
+    
+}
  
     
   public Moradia clone(){

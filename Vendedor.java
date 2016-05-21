@@ -43,8 +43,8 @@ public class Vendedor extends Utilizador
     }
   
   
-    public Vendedor(HashMap<String, Imovel> imoveisVenda, ArrayList<Imovel> imoveisVendidos, String email, String nome, String password, String morada, String datanascimento) {
-        super(email, nome, password, morada, datanascimento);
+    public Vendedor(HashMap<String, Imovel> imoveisVenda, ArrayList<Imovel> imoveisVendidos, String email, String nome, String password, String morada, String datanascimento, int id) {
+        super(email, nome, password, morada, datanascimento,id);
         this.imoveisVenda = imoveisVenda;
         this.imoveisVendidos = imoveisVendidos;
     }
@@ -62,37 +62,29 @@ public class Vendedor extends Utilizador
         this.imoveisVendidos= new ArrayList<>();
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Vendedor other = (Vendedor) obj;
-        if (!Objects.equals(this.imoveisVenda, other.imoveisVenda)) {
-            return false;
-        }
-        if (!Objects.equals(this.imoveisVendidos, other.imoveisVendidos)) {
-            return false;
-        }
+ public boolean equals(Object o){
+    if(this==o)
         return true;
+    
+    if((o==null)|| this.getClass() != o.getClass())
+        return false;
+    
+    else{
+        Vendedor i=(Vendedor) o;
+        return (this.imoveisVenda.equals(i.getImoveisDisponiveis())&& this.imoveisVendidos.equals(i.getImoveisVendidos()));
+    }
     }
 
-    @Override
-    public String toString() {
-        return "Vendedor{" + "imoveisVenda=" + imoveisVenda + ", imoveisVendidos=" + imoveisVendidos + '}';
+   
+     public String toString(){
+        StringBuilder s = new StringBuilder();
+        s.append("Imoveis Disponíveis: " + this.getImoveisDisponiveis() + "\n");
+        s.append("Imoveis Vendidos: " + this.getImoveisVendidos() + "\n");
+        
+       
+        return s.toString();
     }
+
 
     
     

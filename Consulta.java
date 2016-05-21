@@ -1,8 +1,7 @@
 package poo;
 
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class Consulta
 {
