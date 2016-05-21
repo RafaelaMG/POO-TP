@@ -20,9 +20,9 @@ public class Apartamento extends Imovel implements Habitavel
     private int wcA;
     private int porta;
     private int andar;
-    private int garagem; //atribuir 0 ou 1 para caso tenha ou não garagem
+    private String garagem; //atribuir 0 ou 1 para caso tenha ou não garagem
 
-    public Apartamento(int tipoA, double areaT, int quartosA, int wcA, int porta, int andar, int garagem,List<Consulta> cons, String rua, String idImovel, String estado, String tipo, int idP, int precoP, int precoM) {
+    public Apartamento(int tipoA, double areaT, int quartosA, int wcA, int porta, int andar, String garagem,List<Consulta> cons, String rua, String idImovel, String estado, String tipo, int idP, int precoP, int precoM) {
         super(cons,rua, idImovel, estado, tipo, idP, precoP, precoM);
         this.tipoA = tipoA;
         this.areaT = areaT;
@@ -52,7 +52,7 @@ public class Apartamento extends Imovel implements Habitavel
         this.wcA = 0;
         this.porta = 0;
         this.andar = 0;
-        this.garagem = 0;
+        this.garagem = new String();
     }
 
     public int getTipoA() {
@@ -67,7 +67,7 @@ public class Apartamento extends Imovel implements Habitavel
         return andar;
     }
 
-    public int getGaragem() {
+    public String getGaragem() {
         return garagem;
     }
     
@@ -107,7 +107,7 @@ public class Apartamento extends Imovel implements Habitavel
         this.andar = andar;
     }
 
-    public void setGaragem(int garagem) {
+    public void setGaragem(String garagem) {
         this.garagem = garagem;
     }
 
@@ -147,7 +147,7 @@ public class Apartamento extends Imovel implements Habitavel
         if (this.andar != other.andar) {
             return false;
         }
-        if (this.garagem != other.garagem) {
+        if (this.garagem.equals(garagem)) {
             return false;
         }
         return true;

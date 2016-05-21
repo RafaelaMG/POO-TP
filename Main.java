@@ -19,19 +19,21 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class Main {
 
     
     
     
     public static void main(String[] args) {
-        Imoobiliaria gp= Imoobiliaria.initApp();
-        
-        menuHomepage(gp);
+    
+    Imoobiliaria gp= Imoobiliaria.initApp();
+       menuHomepage(gp);
         
         
 
-    }
+    
+}
 
    public static void menuHomepage(Imoobiliaria gp) {
         
@@ -377,7 +379,6 @@ public class Main {
         acao = scan.nextLine();
         Imovel escolha;
         List<Imovel> listImovel = gp.getImoveis();
-        Consulta c=new Consulta();
           switch (acao) {
             case "0":
                 menuHomepage(gp);
@@ -396,7 +397,8 @@ public class Main {
                         System.out.println("\nPreço pretendido pelo proprietário: " + escolha.getPrecoP());
                         System.out.println("\nPreço Mínimo: " + escolha.getPrecoM());
                         System.out.println("\nTipo de Imóvel: " + escolha.getTipo());
-                        escolha.getConsulta().add(c);
+                        Consulta c =new Consulta();
+                        gp.adicionaConsulta(c, escolha);
                         System.out.println("\n--------------------------------------------------------------");
                         System.out.println("\n0 - Voltar atrás");
                         System.out.println("\n1 - Editar Estado do Imóvel");
@@ -528,10 +530,11 @@ public class Main {
         System.out.println("-------------Últimas Consultas--------------\n");  
         int i=1;
         
-        for(Imovel a : gp.getImoveis())
-            System.out.println(a);
-        
+        for(Imovel a: gp.getImoveis())
+               System.out.println(a);
+            
+            
+        }
      
  }
-}
 

@@ -45,9 +45,8 @@ public class Comprador extends Utilizador
     }
     
     public void addFavorito(String idImovel) {
-        if (!imfavoritos.contains(idImovel)) {
-            imfavoritos.add(idImovel);
-        }
+        imfavoritos.add(idImovel);
+        
     }
    
     @Override

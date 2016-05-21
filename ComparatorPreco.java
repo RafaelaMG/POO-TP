@@ -16,7 +16,6 @@ public class ComparatorPreco implements Comparator<Imovel> {
         int n1=i1.getPrecoM();
         int n2=i2.getPrecoM();
         
-        if(n1==n2) return 0;
         if(n1>n2) return 1;
         return -1;
     }

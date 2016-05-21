@@ -272,16 +272,14 @@ public class Imoobiliaria implements Serializable {
     }
 
     public List<Imovel> getImovel(String classe, int preco) {
-        List<Imovel> imo = new ArrayList<Imovel>();
-
+        
+        TreeSet<Imovel> setImovel = new TreeSet<Imovel>(new ComparatorPreco());
         for (Imovel i : imoveis) {
-            while (i.getPrecoP() <= preco) {
-                if (i.getTipo().equals(classe)) {
-                    imo.add(i);
-                }
+            if(i.getPrecoP() <= preco && i.getTipo().equals(classe)){
+                setImovel.add(i.Clone());
             }
         }
-        return imo;
+        return new ArrayList<>(setImovel);
     }
 
     public List<Habitavel> getHabitaveis(int preco) {
@@ -302,7 +300,7 @@ public class Imoobiliaria implements Serializable {
         Vendedor v = new Vendedor();
         for (Imovel i : imoveis) {
             for (Utilizador u : utilizadores.values()) {
-                if (i.getIdP() == u.getId()) {
+                if (i.getIdP() == v.getId()) { // não funciona
                     v = (Vendedor) u.Clone();
                 }
                 mapImo.put(i, v);
@@ -338,61 +336,75 @@ public class Imoobiliaria implements Serializable {
     }
 
     public void setFavorito(String idImovel) throws ImovelInexistenteException, SemAutorizacaoException {
-        
-    
-        if (user.getId() == 2) {
-            throw new SemAutorizacaoException("Não pode seleccionar como favorito");
-        }
-        for (Imovel i : imoveis) {
-            if (i.getIdImovel().equals(idImovel) && !imfavoritos.contains(i)) {
-                imfavoritos.add(i.Clone());
-
+     
+     if (checkComprador()) {
+            if (imoveis.contains(idImovel)) {
+                Comprador c = (Comprador) user;
+                c.addFavorito(idImovel);
             } else {
                 throw new ImovelInexistenteException("Este imóvel não existe");
             }
+        } else {
+            throw new SemAutorizacaoException("Não tem autorização para adicionar favoritos");
         }
     }
 
+    public boolean checkComprador(){
+       return (user!=null && user.getId()==1);
+            
+    }
     public TreeSet<Imovel> getFavoritos() throws SemAutorizacaoException {
-               
-     TreeSet<Imovel> fav = new TreeSet<Imovel>(new ComparatorPreco());
-
-        if (user.getId() == 0) {
-            for (Imovel i : imfavoritos) {
-               fav.add(i.Clone());
+        TreeSet<Imovel> res=new TreeSet<>();
+        if (checkComprador()) {     
+           TreeSet<Imovel> fav = new TreeSet<Imovel>(new ComparatorPreco());
+           Comprador c=(Comprador) user;
+           ArrayList<String> favoritos=c.getImfavoritos();
+            for (Imovel i: imfavoritos ) {
+               if(favoritos.contains(i.getIdImovel()))
+                   fav.add(i.Clone());
              }
+            Iterator<Imovel> iterator = fav.descendingIterator();   
+            for (int i = 0; i <= 10 && iterator.hasNext(); i++ ) {
+            res.add(iterator.next()); }
         } else {
             throw new SemAutorizacaoException("Não tem autorização para aceder aos favoritos");
         }
-        return fav;
+        return res;
     }
 
 
-public void consultar(Imovel i) {
-        Consulta c = new Consulta(new GregorianCalendar());
-        consultas.add(c);
-    }
     
 public List<Consulta> getConsultas(){
 
   List<Consulta> res = new ArrayList<Consulta>();
   //ORDENAR TODAS AS CONSULTAS
-  Set<Consulta> setConsultas = new TreeSet<Consulta>(new ComparatorData());
+  TreeSet<Consulta> setConsultas = new TreeSet<Consulta>(new ComparatorData());
   for (Imovel imovel: imoveis) {
     for(Consulta consulta: imovel.getConsulta()){
       setConsultas.add(consulta.clone());
     }    
    }
     
-   Iterator<Consulta> iterator = setConsultas.iterator();   
+   Iterator<Consulta> iterator = setConsultas.descendingIterator();   
    for (int i = 0; i <= 10 && iterator.hasNext(); i++ ) {
       res.add(iterator.next());           
    }
 
    return res;
 }
-    public Set<String> getTopImoveis(int n) {
-        return null;
-    }
 
+public void adicionaConsulta(Consulta consulta, Imovel imovel){
+        for(Imovel i : imoveis){
+            if(imovel.equals(i)){
+                List<Consulta> consultas = i.getConsulta();
+                consultas.add(consulta.clone());
+                i.setConsultas(consultas);
+            }
+        }
+    }
 }
+
+
+
+       
+        
