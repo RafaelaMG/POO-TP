@@ -1,4 +1,3 @@
-# POO15-16
-Trabalho prático de POO 2015/2016
+# POO
 
-Trabalhem seus vegetas!
+Programação Orientada aos Objectos
